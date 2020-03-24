@@ -1,0 +1,57 @@
+{% extends 'stocks/base.html' %}
+
+{% block content %}
+
+<h1>Check Currency Rates</h1>
+
+<form class="form-inline my-2 my-lg-0" action="{% url 'stocks:add_currency' %}" method="POST">
+    {% csrf_token %}
+  <select class="form-control mr-sm-2" name="cur">
+      <option selected>Add currency..</option>
+      <option value="GBP">GBP</option>
+      <option value="INR">INR</option>
+      <option value="USD">USD</option>
+      <option value="AUD">AUD</option>
+  </select>
+  <button type="submit" class="btn btn-outline-success my-2 my-sm-0">Add</button>
+</form>
+
+{% if error %}
+</br>
+    {{ error }}
+{% endif %} 
+</br></br>
+<table class="table table-bordered table-hover">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">Base</th>
+        <th scope="col">INR</th>
+        <th scope="col">EUR</th>
+        <th scope="col">USD</th>
+        <th scope="col">GBP</th>
+        <th scope="col">AUD</th>
+        <th scope="col">Last Updated</th>
+        <th scope="col">Delete</th>
+      </tr>
+    </thead>
+    <tbody>
+        {% for op in output %}
+      <tr>
+        <th scope="row">1 {{op.base}} </th>
+        <td>{{op.rates.INR}}</td>
+        <td>{{op.rates.EUR}}</td>
+        <td>{{op.rates.USD}}</td>
+        <td>{{op.rates.GBP}}</td>
+        <td>{{op.rates.AUD}}</td>
+        <td>{{op.date}}</td>
+        {% for cur in currency %}
+        {% if cur.cur == op.base %}
+        <td><a href="{% url 'stocks:del_currency' cur.id %}"> Delete an currency</a></td>  
+        {% endif %}
+        {% endfor %} 
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>   
+
+{% endblock %}

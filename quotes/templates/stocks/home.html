@@ -1,0 +1,20 @@
+{% extends 'stocks/base.html' %}
+{% block content %}
+
+{% if ticker %}
+<p>{{ ticker }}</p>
+{% endif %}
+{% if api %}
+    {% if api.error %}
+        <p>There was error in response of the api</p>
+    {% else %}
+        <span>The base rate is {{ api.base }}</span>
+        </br>
+         {% for key, value in api.rates.items %}     
+            {{ key }} : {{value}}
+            </br>
+         {% endfor %}
+    {% endif %}
+
+{% endif %}
+{% endblock %}
